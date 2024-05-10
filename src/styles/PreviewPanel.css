@@ -1,0 +1,47 @@
+.preview-panel {
+  position: sticky;
+  top: 1rem;
+  background: #fff;
+  color: rgb(47, 47, 47);
+  border: 1px solid #fff;
+  height: 297mm;
+  width: 210mm;
+  max-width: 800px;
+  margin: 1rem auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.educ-info {
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.name {
+  text-align: center;
+}
+
+.socials {
+  display: flex;
+  justify-content: center;
+}
+
+p {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.preview-panel::-webkit-scrollbar {
+  display: none;
+}
+
+@media screen and (max-width: 1024px) {
+  .material-symbols-outlined {
+    font-size: 1rem;
+  }
+}

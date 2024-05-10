@@ -1,0 +1,11 @@
+.personal-info {
+    position: relative;
+    top: 0;
+    color: #fff;
+    background: rgb(0, 71, 118);
+    padding: 1rem 0 0 0;
+}
+
+.personal-info p {
+    font-size: .75rem;
+}

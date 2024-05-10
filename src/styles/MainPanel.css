@@ -1,0 +1,56 @@
+.main-panel {
+  display: grid;
+  grid-template-columns: 2fr 8fr;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+}
+
+.sub-panel {
+  width: 400px;
+  height: 100%;
+  overflow-y: scroll;
+  padding: 1rem;
+}
+
+.sub-panel a{
+  display: none;
+  position: fixed;
+  top: 2%;
+  right: 5%;
+  padding: 1rem 0;
+}
+
+h3 {
+  margin-left: 1rem;
+}
+
+@media screen and (max-width: 1024px) {
+  .main-panel {
+    display: block;
+    position: relative;
+  }
+
+  .sub-panel {
+    width: auto;
+  }
+
+  .preview-button {
+    display: block;
+  }
+
+  .name {
+    font-size: 1.5rem;
+  }
+
+  .main-panel div {
+    margin-bottom: 10px;
+  }
+
+  .preview-panel {
+    position: unset;
+    width: auto;
+    box-shadow: none;
+    font-size: .4rem;
+  }
+}

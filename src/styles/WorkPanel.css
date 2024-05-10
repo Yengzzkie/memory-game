@@ -1,0 +1,12 @@
+.work-info-wrapper {
+  padding: 0 1rem 1rem;
+  border-bottom: 3px dotted #3f3f3f;
+}
+
+.work-info {
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+}
