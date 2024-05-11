@@ -6,7 +6,6 @@ function App() {
   const [playedCards, setPlayedCards] = useState([]);
   const [maxScore, setMaxScore] = useState(parseInt(localStorage.getItem('maxScore')) || playedCards.length);
 
-
   useEffect(() => {
     getPokemons();
   }, []);
@@ -47,21 +46,20 @@ function App() {
     return shuffledArray;
   }
 
-
+  
   function handlePlayedCard(pokemon) {
     const { name } = pokemon;
 
     if (playedCards.includes(name)) {
       alert("Game Over");
       window.location.reload();
-
+      
       return; // Exit function early if the card has already been played
     }
 
     if (playedCards.length >= maxScore) {
       setMaxScore(playedCards.length + 1)
       localStorage.setItem("maxScore", maxScore + 1);
-
     }
 
     setPlayedCards((prevPlayedCards) => [...prevPlayedCards, name]);
@@ -73,13 +71,6 @@ function App() {
       <h2>Score: {playedCards.length}</h2>
       <h2>High score: {maxScore}</h2>
       <PokemonCard pokemonList={pokemonList} handlePlayedCard={handlePlayedCard} />
-      <ul>
-        {playedCards.map((spriteUrl, index) => (
-          <li key={index}>
-            <img src={spriteUrl} />
-          </li>
-        ))}
-      </ul>
     </>
   );
 }
