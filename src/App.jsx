@@ -70,7 +70,6 @@ function App() {
 
   return (
     <>
-      <h1>PokeList</h1>
       <h2>Score: {playedCards.length}</h2>
       <h2>High score: {maxScore}</h2>
       <PokemonCard pokemonList={pokemonList} handlePlayedCard={handlePlayedCard} />
