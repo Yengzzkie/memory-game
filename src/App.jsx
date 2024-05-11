@@ -4,6 +4,8 @@ import PokemonCard from "./components/PokemonCard";
 function App() {
   const [pokemonList, setPokemonList] = useState([]);
   const [playedCards, setPlayedCards] = useState([]);
+  const [maxScore, setMaxScore] = useState(parseInt(localStorage.getItem('maxScore')) || playedCards.length);
+
 
   useEffect(() => {
     getPokemons();
@@ -19,7 +21,7 @@ function App() {
     const pokemonURL = 'https://pokeapi.co/api/v2/pokemon/';
     const urls = [];
 
-    for (let i = 1; i < 10; i++) {
+    for (let i = 0; i < 15; i++) {
       const randomNumber = generateRandomNumber();
       const url = `${pokemonURL}${randomNumber}`;
       const response = await fetch(url);
@@ -45,12 +47,21 @@ function App() {
     return shuffledArray;
   }
 
+
   function handlePlayedCard(pokemon) {
     const { name } = pokemon;
 
     if (playedCards.includes(name)) {
-      console.log("Game Over");
+      alert("Game Over");
+      window.location.reload();
+
       return; // Exit function early if the card has already been played
+    }
+
+    if (playedCards.length >= maxScore) {
+      setMaxScore(playedCards.length + 1)
+      localStorage.setItem("maxScore", maxScore + 1);
+
     }
 
     setPlayedCards((prevPlayedCards) => [...prevPlayedCards, name]);
@@ -60,8 +71,9 @@ function App() {
   return (
     <>
       <h1>PokeList</h1>
+      <h2>Score: {playedCards.length}</h2>
+      <h2>High score: {maxScore}</h2>
       <PokemonCard pokemonList={pokemonList} handlePlayedCard={handlePlayedCard} />
-      <h2>Played Cards:</h2>
       <ul>
         {playedCards.map((spriteUrl, index) => (
           <li key={index}>
