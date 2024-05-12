@@ -5,14 +5,17 @@ function App() {
   const [pokemonList, setPokemonList] = useState([]);
   const [playedCards, setPlayedCards] = useState([]);
   const [maxScore, setMaxScore] = useState(parseInt(localStorage.getItem('maxScore')) || playedCards.length);
+  const [difficulty, setDifficulty] = useState(12);
+  const [loading, setLoading] = useState(false); 
 
   useEffect(() => {
+    setLoading(true);
     getPokemons();
-  }, []);
+  }, [difficulty]);
 
   //random number generator to get random pokemon instead of just getting the default first 20 pokemons on the API
   function generateRandomNumber() {
-    return Math.floor(Math.random() * 100) + 1;
+    return Math.floor(Math.random() * 1000) + 1;
   }
 
   //fetches pokemon images
@@ -20,7 +23,7 @@ function App() {
     const pokemonURL = 'https://pokeapi.co/api/v2/pokemon/';
     const urls = [];
 
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < difficulty; i++) {
       const randomNumber = generateRandomNumber();
       const url = `${pokemonURL}${randomNumber}`;
       const response = await fetch(url);
@@ -34,6 +37,7 @@ function App() {
     }
 
     setPokemonList(urls);
+    setLoading(false); // Set loading to false when fetching data completes
   }
 
   // Fisher-Yates shuffle
@@ -46,15 +50,14 @@ function App() {
     return shuffledArray;
   }
 
-  
   function handlePlayedCard(pokemon) {
     const { name } = pokemon;
 
     if (playedCards.includes(name)) {
-      alert("Game Over");
+      alert(`Game Over! Your score is ${playedCards.length}`);
       window.location.reload();
       
-      return; // Exit function early if the card has already been played
+      return; // exit function if the card has already been played
     }
 
     if (playedCards.length >= maxScore) {
@@ -68,9 +71,20 @@ function App() {
 
   return (
     <>
-      <h2>Score: {playedCards.length}</h2>
-      <h2>High score: {maxScore}</h2>
-      <PokemonCard pokemonList={pokemonList} handlePlayedCard={handlePlayedCard} />
+      <div className="score">
+        <h2>Score: {playedCards.length}</h2>
+        <h2>High score: {maxScore}</h2>
+      </div>
+      <div className="buttons">
+        <button onClick={() => {setDifficulty(12)}}>Easy</button>
+        <button onClick={() => {setDifficulty(20)}}>Normal</button>
+        <button onClick={() => {setDifficulty(24)}}>Expert</button>
+      </div>
+      {loading ? (
+        <div className="loading">Loading...</div>
+      ) : (
+        <PokemonCard pokemonList={pokemonList} handlePlayedCard={handlePlayedCard} />
+      )}
     </>
   );
 }
