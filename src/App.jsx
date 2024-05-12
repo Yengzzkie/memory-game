@@ -60,6 +60,11 @@ function App() {
       return; // exit function if the card has already been played
     }
 
+    if (playedCards.length === pokemonList.length - 1) {
+      alert('Congratulations! You won!')
+      window.location.reload();
+    }
+
     if (playedCards.length >= maxScore) {
       setMaxScore(playedCards.length + 1)
       localStorage.setItem("maxScore", maxScore + 1);
@@ -77,7 +82,7 @@ function App() {
       </div>
       <div className="buttons">
         <button onClick={() => {setDifficulty(12)}}>Easy</button>
-        <button onClick={() => {setDifficulty(20)}}>Normal</button>
+        <button onClick={() => {setDifficulty(18)}}>Normal</button>
         <button onClick={() => {setDifficulty(24)}}>Expert</button>
       </div>
       {loading ? (
