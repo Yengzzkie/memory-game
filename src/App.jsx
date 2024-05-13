@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import PokemonCard from "./components/PokemonCard";
+import generateRandomNumber from "./utils/generateRandomNumber";
+import getPokemons from "./utils/fetchPokemon";
+import shuffleCards from "./utils/shuffleCards";
 
 function App() {
   const [pokemonList, setPokemonList] = useState([]);
@@ -10,45 +13,8 @@ function App() {
 
   useEffect(() => {
     setLoading(true);
-    getPokemons();
+    getPokemons({generateRandomNumber, difficulty, setPokemonList, setLoading});
   }, [difficulty]);
-
-  //random number generator to get random pokemon instead of just getting the default first 20 pokemons on the API
-  function generateRandomNumber() {
-    return Math.floor(Math.random() * 1000) + 1;
-  }
-
-  //fetches pokemon images
-  async function getPokemons() {
-    const pokemonURL = 'https://pokeapi.co/api/v2/pokemon/';
-    const urls = [];
-
-    for (let i = 0; i < difficulty; i++) {
-      const randomNumber = generateRandomNumber();
-      const url = `${pokemonURL}${randomNumber}`;
-      const response = await fetch(url);
-      if (!response.ok) {
-        console.error(`Failed to fetch data for Pokémon ${randomNumber}`);
-        continue; 
-      }
-      const data = await response.json();
-      const spriteUrl = data.sprites.front_default; 
-      urls.push(spriteUrl);
-    }
-
-    setPokemonList(urls);
-    setLoading(false); // Set loading to false when fetching data completes
-  }
-
-  // Fisher-Yates shuffle
-  function shuffleCards(array) {
-    const shuffledArray = [...array];
-    for (let i = shuffledArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
-    }
-    return shuffledArray;
-  }
 
   function handlePlayedCard(pokemon) {
     const { name } = pokemon;
@@ -60,18 +26,23 @@ function App() {
       return; // exit function if the card has already been played
     }
 
-    if (playedCards.length === pokemonList.length - 1) {
+    if (playedCards.length === pokemonList.length - 1) { //checks if all pokemons are clicked
       alert('Congratulations! You won!')
       window.location.reload();
     }
 
-    if (playedCards.length >= maxScore) {
+    if (playedCards.length >= maxScore) { //checks if max score is beat
       setMaxScore(playedCards.length + 1)
       localStorage.setItem("maxScore", maxScore + 1);
     }
 
     setPlayedCards((prevPlayedCards) => [...prevPlayedCards, name]);
     setPokemonList((prevPokemonList) => shuffleCards(prevPokemonList));
+  }
+
+  function resetScore() {
+    setMaxScore(0)
+    localStorage.setItem("maxScore", maxScore)
   }
 
   return (
@@ -84,6 +55,7 @@ function App() {
         <button onClick={() => {setDifficulty(12)}}>Easy</button>
         <button onClick={() => {setDifficulty(18)}}>Normal</button>
         <button onClick={() => {setDifficulty(24)}}>Expert</button>
+        <button onClick={resetScore}>Reset Score</button>
       </div>
       {loading ? (
         <div className="loading">Loading...</div>
