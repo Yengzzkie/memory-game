@@ -3,7 +3,6 @@ import PokemonCard from "./components/PokemonCard";
 import generateRandomNumber from "./utils/generateRandomNumber";
 import getPokemons from "./utils/fetchPokemon";
 import shuffleCards from "./utils/shuffleCards";
-import resetScore from "./utils/resetScore";
 
 function App() {
   const [pokemonList, setPokemonList] = useState([]);
@@ -39,6 +38,11 @@ function App() {
 
     setPlayedCards((prevPlayedCards) => [...prevPlayedCards, name]);
     setPokemonList((prevPokemonList) => shuffleCards(prevPokemonList));
+  }
+
+  function resetScore() {
+    setMaxScore(0)
+    localStorage.setItem("maxScore", maxScore)
   }
 
   return (
